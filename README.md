@@ -2,17 +2,20 @@
 使用spring aop，便于理解
 
 # 疑问
-#####1. annotation注解方式的aop为什么要在xml配置中配置aspectj的bean，不配置aop日志就不生效？
-#####2. xml和annotation两种方式的测试结果表明，around后置log打印顺序不一样，为什么？
-#####3. @Pointcut("execution(* com.shyu.annotation.demo1.PersonService.*(..))")中的PersonService需要在xml中弄成bean或注解为@Service，aop才生效；如果不写PersonService则会报错，找不到对应的bean
-#####4. aop日志只展示before和around，而且方法不执行
+##### 1. annotation注解方式的aop为什么要在xml配置中配置aspectj的bean，不配置aop日志就不生效？
+
+##### 2. xml和annotation两种方式的测试结果表明，around后置log打印顺序不一样，为什么？
+
+##### 3. @Pointcut("execution(* com.shyu.annotation.demo1.PersonService.*(..))")中的PersonService需要在xml中弄成bean或注解为@Service，aop才生效；如果不写PersonService则会报错，找不到对应的bean
+
+##### 4. aop日志只展示before和around，而且方法不执行
    - 问题代码：
-    `@Around("pointCut()")
+    @Around("pointCut()")
     public void around(ProceedingJoinPoint joinPoint) {
         System.out.println("around start..");
-    }`
+    }
    - 修正后代码（原因：around中没有执行joinPoint.proceed()导致方法不执行）：
-    `@Around("pointCut()")
+    @Around("pointCut()")
     public void around(ProceedingJoinPoint joinPoint) {
         System.out.println("around start..");
         try {
@@ -21,14 +24,15 @@
             throwable.printStackTrace();
         }
         System.out.println("around end..");
-    }`
-#####5. 切点使用方法 https://www.cnblogs.com/flowwind/p/4782606.html
+    }
+
+##### 5. 切点使用方法 https://www.cnblogs.com/flowwind/p/4782606.html
    - 方法一：execution(* com.shyu.annotation.demo1.PersonService.*(..))    需包含对应的类，否则报错找不到对应的bean；范围是对应类所有方法
    - 方法二：execution(* *(..))    范围是所有类所有方法
    - 方法三：@Pointcut("execution(* com.shyu.annotation.demo1..*(..))")    范围是demo1下的所有类所有方法
 > Spring切入点表达式常用写法：http://blog.51cto.com/lavasoft/172292
-#####6. 静态和动态aop修改字节码或插入代码的时机？如何直观查看aop修改字节码？（参考：http://caoyaojun1988-163-com.iteye.com/blog/1131660）
-`
+
+##### 6. 静态和动态aop修改字节码或插入代码的时机？如何直观查看aop修改字节码？（参考：http://caoyaojun1988-163-com.iteye.com/blog/1131660）
     切面织入：
         编译时织入（Compile Time Weaving, CTW）：https://jingyan.baidu.com/article/3ea51489b927ff52e71bba4d.html
         载入时织入（Load Time Weaving, LTW）
@@ -58,8 +62,8 @@
         切面织入（aspect waving）就是将切面应用到目标对象从而创建一个新的代理对象的过程。切面织入将一些代码插入原代码，AspectJ就是这么做的。我们给它两个二进制Java类Foo.class 和 MethodLogger.class; 它返回三个类——修改过的Foo.class、Foo$AjcClosure1.class和未修改的MethodLogger.class。
 
         为了理解如何将不同的通知应用于对应的哪个方法，AspectJ织入在.class文件中使用了注解，并使用反射来浏览环境变量中的所有类。它分析@Around注解中的哪个方法满足条件。power()就在此时被发现了。
-`
-#####7. 查看和编辑.class文件中二进制码的方法？
+
+##### 7. 查看和编辑.class文件中二进制码的方法？
     1. notepad怎么查看16进制编码：http://blog.csdn.net/nameisbill/article/details/54616311
     2. 查看解析好的.class文件的工具：Bytecode viewer（https://github.com/Konloch/bytecode-viewer/releases）、JBE（http://www.cs.ioc.ee/~ando/jbe/）
     3. 反编译.class文件工具：idea、eclipse等
@@ -75,7 +79,6 @@
         * 修改jar包中的.class功能（直接修改，难度大 或 反编译，修改后，重新编译--需获取jdk编译器版本并用相同版本再次编译）
 
 
-`
 AOP主要包含了通知、切点和连接点等术语，介绍如下
 
     通知(Advice)
@@ -98,9 +101,9 @@ AOP主要包含了通知、切点和连接点等术语，介绍如下
 现阶段的AOP框架
 AOP框架除了Spring AOP之外，还包括AspectJ、JBoss AOP；
 上述框架的区别是Spring AOP只支持到方法连接点，另外两个还支持字段和构造器连接点。
-`
 
-`
+
+
 摘自 AOP与JAVA动态代理：https://www.cnblogs.com/xiaoxiao7/p/6057724.html
 1、AOP的各种实现
 AOP就是面向切面编程，我们可以从以下几个层面来实现AOP
@@ -139,9 +142,9 @@ Spring默认采取动态代理机制实现AOP，当动态代理不可用时（�
     第一，只能对方法进行切入，不能对接口、字段、静态代码块进行切入（切入接口的某个方法，则该接口下所有实现类的该方法都将被切入）
     第二，同类中的互相调用方法将不会使用代理类。因为要使用代理类必须从Spring容器中获取Bean
     第三，性能不是最好的。从前面几节得知，我们自定义的类加载器，性能优于动态代理和cglib
-`
 
-`
+
+
 摘自：http://onlyor.iteye.com/blog/1478109
 AOP作用
 　　Authentication 权限
@@ -165,4 +168,3 @@ Spring AOP（动态）：通过代理程序运行时织入
 AspectJ（静态）：通过修改程序的字节码完成织入
     优点：性能好，功能强大，无需Spring容器
     缺点：修改需要重新编译，要引入Aspect J的编译器／织入器，复杂
-`
