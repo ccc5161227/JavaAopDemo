@@ -21,7 +21,7 @@
         public void around(ProceedingJoinPoint joinPoint) {
             System.out.println("around start..");
             try {
-                *joinPoint.proceed();*
+                joinPoint.proceed();
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
