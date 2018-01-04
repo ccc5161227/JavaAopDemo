@@ -146,25 +146,25 @@ Spring默认采取动态代理机制实现AOP，当动态代理不可用时（�
 
 
 摘自：http://onlyor.iteye.com/blog/1478109
-AOP作用
-　　Authentication 权限
-　　Caching 缓存
-　　Context passing 内容传递
-　　Error handling 错误处理
-　　Lazy loading 懒加载
-　　Debugging 调试
-　　logging, tracing, profiling and monitoring 记录跟踪 优化 校准
-　　Performance optimization 性能优化
-　　Persistence 持久化
-　　Resource pooling 资源池
-　　Synchronization 同步
-　　Transactions 事务
+    AOP作用
+    　　Authentication 权限
+    　　Caching 缓存
+    　　Context passing 内容传递
+    　　Error handling 错误处理
+    　　Lazy loading 懒加载
+    　　Debugging 调试
+    　　logging, tracing, profiling and monitoring 记录跟踪 优化 校准
+    　　Performance optimization 性能优化
+    　　Persistence 持久化
+    　　Resource pooling 资源池
+    　　Synchronization 同步
+    　　Transactions 事务
 
 
-Spring AOP（动态）：通过代理程序运行时织入
-    优点：简单，易用
-    缺点：性能略低，仅适用于方法调用，必须在Spring容器
+    Spring AOP（动态）：通过代理程序运行时织入
+        优点：简单，易用
+        缺点：性能略低，仅适用于方法调用，必须在Spring容器
 
-AspectJ（静态）：通过修改程序的字节码完成织入
-    优点：性能好，功能强大，无需Spring容器
-    缺点：修改需要重新编译，要引入Aspect J的编译器／织入器，复杂
+    AspectJ（静态）：通过修改程序的字节码完成织入
+        优点：性能好，功能强大，无需Spring容器
+        缺点：修改需要重新编译，要引入Aspect J的编译器／织入器，复杂
