@@ -10,21 +10,23 @@
 
 ##### 4. aop日志只展示before和around，而且方法不执行
    - 问题代码：
-    @Around("pointCut()")
-    public void around(ProceedingJoinPoint joinPoint) {
-        System.out.println("around start..");
-    }
-   - 修正后代码（原因：around中没有执行joinPoint.proceed()导致方法不执行）：
-    @Around("pointCut()")
-    public void around(ProceedingJoinPoint joinPoint) {
-        System.out.println("around start..");
-        try {
-            joinPoint.proceed();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
+
+        @Around("pointCut()")
+        public void around(ProceedingJoinPoint joinPoint) {
+            System.out.println("around start..");
         }
-        System.out.println("around end..");
-    }
+   - 修正后代码（原因：around中没有执行joinPoint.proceed()导致方法不执行）：
+
+        @Around("pointCut()")
+        public void around(ProceedingJoinPoint joinPoint) {
+            System.out.println("around start..");
+            try {
+                joinPoint.proceed();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            System.out.println("around end..");
+        }
 
 ##### 5. 切点使用方法 https://www.cnblogs.com/flowwind/p/4782606.html
    - 方法一：execution(* com.shyu.annotation.demo1.PersonService.*(..))    需包含对应的类，否则报错找不到对应的bean；范围是对应类所有方法
@@ -146,6 +148,7 @@ Spring默认采取动态代理机制实现AOP，当动态代理不可用时（�
 
 
 摘自：http://onlyor.iteye.com/blog/1478109
+
     AOP作用
     　　Authentication 权限
     　　Caching 缓存
