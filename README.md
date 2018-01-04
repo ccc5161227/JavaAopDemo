@@ -9,19 +9,19 @@
 ##### 3. @Pointcut("execution(* com.shyu.annotation.demo1.PersonService.*(..))")中的PersonService需要在xml中弄成bean或注解为@Service，aop才生效；如果不写PersonService则会报错，找不到对应的bean
 
 ##### 4. aop日志只展示before和around，而且方法不执行
-   - 问题代码：
+- 问题代码：
 
         @Around("pointCut()")
         public void around(ProceedingJoinPoint joinPoint) {
             System.out.println("around start..");
         }
-   - 修正后代码（原因：around中没有执行joinPoint.proceed()导致方法不执行）：
+- 修正后代码（原因：around中没有执行joinPoint.proceed()导致方法不执行）：
 
         @Around("pointCut()")
         public void around(ProceedingJoinPoint joinPoint) {
             System.out.println("around start..");
             try {
-                joinPoint.proceed();
+                *joinPoint.proceed();*
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -117,12 +117,13 @@ AOP就是面向切面编程，我们可以从以下几个层面来实现AOP
 2、AOP各种实现机制的比较
 
 以下是各种实现机制的比较：
-类别	机制	原理	优点	缺点
-静态AOP 	静态织入 	在编译期，切面直接以字节码的形式编译到目标字节码文件中 	对系统无性能影响 	灵活性不够
-动态AOP 	动态代理 	在运行期，目标类加载后，为接口动态生成代理类，将切面织入到代理类中 	相对于静态AOP更加灵活   切入的关注点需要实现接口。对系统有一点性能影响
-动态字节码生成 	CGLIB 	在运行期，目标类加载后，动态构建字节码文件生成目标类的子类，将切面逻辑加入到子类中 	没有接口也可以织入 	扩展类的实例方法为final时，则无法进行织入
-自定义类加载器 	  	在运行期，目标加载前，将切面逻辑加到目标字节码里 	可以对绝大部分类进行织入 	代码中如果使用了其他类加载器，则这些类将不会被织入
-字节码转换 	  	在运行期，所有类加载器加载字节码前进行拦截 	可以对所有类进行织入
+
+    类别	机制	原理	优点	缺点
+    静态AOP 	静态织入 	在编译期，切面直接以字节码的形式编译到目标字节码文件中 	对系统无性能影响 	灵活性不够
+    动态AOP 	动态代理 	在运行期，目标类加载后，为接口动态生成代理类，将切面织入到代理类中 	相对于静态AOP更加灵活   切入的关注点需要实现接口。对系统有一点性能影响
+    动态字节码生成 	CGLIB 	在运行期，目标类加载后，动态构建字节码文件生成目标类的子类，将切面逻辑加入到子类中 	没有接口也可以织入 	扩展类的实例方法为final时，则无法进行织入
+    自定义类加载器 	  	在运行期，目标加载前，将切面逻辑加到目标字节码里 	可以对绝大部分类进行织入 	代码中如果使用了其他类加载器，则这些类将不会被织入
+    字节码转换 	  	在运行期，所有类加载器加载字节码前进行拦截 	可以对所有类进行织入
 
 
 5、AOP实战
