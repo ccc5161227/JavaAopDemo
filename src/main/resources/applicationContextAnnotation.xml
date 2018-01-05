@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- 目标对象 -->
+    <bean id="aspectimpl" class="com.shyu.annotation.demo.impl.AspectjImpl"></bean>
+    <!-- 增强类（为什么不加这个bean就不会生效？） -->
+    <bean id="aspectj" class="com.shyu.annotation.demo.aspectj.Aspect"></bean>
+    <!-- 扫描整个项目 关联注解类和实现类 -->
+    <aop:aspectj-autoproxy />
+
+</beans>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 1. 实现类的引入，目标类 -->
+    <bean id="adviceimpl" class="com.shyu.ProxyFactoryBean.impl.AdviceImpl"></bean>
+
+    <!-- 2. 切面  通知(切面类，含有通知)  -->
+    <!-- 前置增强  通知-->
+    <bean id="advicebefore" class="com.shyu.ProxyFactoryBean.advice.MethodBeforeAdvice"></bean>
+    <!-- 后置增强  通知-->
+    <bean id="adviceafter" class="com.shyu.ProxyFactoryBean.advice.AfterReturningAdvie"></bean>
+
+    <!-- 环绕增强 -->
+    <bean id="around" class="com.shyu.ProxyFactoryBean.advice.MyInterceptor"></bean>
+
+    <!-- 异常增强 -->
+    <bean id="exception" class="com.shyu.ProxyFactoryBean.advice.MyException"></bean>
+
+
+    <!-- 关联  代理工厂bean ProxyFacteryBean 通知 -->
+    <!--<bean id="serviceProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+
+       <property name="targetName" value="adviceimpl"></property>
+       <property name="interceptorNames" value="advicebefore,adviceafter"></property>
+
+    </bean>-->
+
+    <!-- 环绕增强 代理工厂 顾问包装通知 -->
+    <bean id="aroundserviceProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+
+        <property name="target" ref="adviceimpl"></property>
+        <property name="interceptorNames" value="beforeadvisor"></property>
+
+    </bean>
+
+    <!-- 顾问  包装advice -->
+    <bean id="beforeadvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="advice" ref="around"></property>
+        <property name="mappedNames" value="fristMethod,secondMethod"></property>
+    </bean>
+
+    <!-- 顾问  包装advice 正则表达式-->
+    <!--<bean id="beforeadvisor1" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+     <property name="advice" ref="beforeadvice"></property>
+     <property name="pattern" value=".*Method.*"></property>
+    </bean>-->
+
+
+    <!-- 默认自动代理  默认只找通知-->
+    <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>-->
+
+    <!-- beanname自动代理 可以选择顾问或者通知-->
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames" value="adviceimpl"></property>
+        <property name="interceptorNames" value="beforeadvisor"></property>
+    </bean>
+
+</beans>

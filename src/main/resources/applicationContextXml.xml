@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- 目标对象 -->
+    <bean id="aspectimpl" class="com.shyu.xml.demo.impl.AspectjImpl"></bean>
+    <!-- 增强类（为什么不加这个bean就不会生效？） -->
+    <bean id="aspectj" class="com.shyu.xml.demo.aspectj.Aspect"></bean>
+    <!-- Aspectj的XML配置文件 -->
+    <aop:config>
+        <aop:pointcut expression="execution(public * *(..))" id="pointcut"/>
+        <aop:aspect ref="aspectj">
+            <aop:before method="asBefore" pointcut-ref="pointcut"/>
+            <aop:after-returning method="asAfterReturning" pointcut-ref="pointcut"/>
+            <aop:around method="asAround" pointcut-ref="pointcut"/>
+            <aop:after method="asAfter" pointcut-ref="pointcut" />
+            <aop:after-throwing method="asThorws" pointcut-ref="pointcut" />
+        </aop:aspect>
+    </aop:config>
+
+</beans>

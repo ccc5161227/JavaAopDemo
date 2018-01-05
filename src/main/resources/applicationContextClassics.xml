@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
+    <!-- 业务biz与dao接口对象的实现 -->
+    <bean id="dao" class="com.shyu.classics.dao.UserDaoImpl"></bean>
+    <bean id="biz" class="com.shyu.classics.biz.UserBiz">
+        <property name="udao" ref="dao"></property>
+    </bean>
+    <!-- 前置与后置内容的配置 -->
+    <bean id="before" class="com.shyu.classics.aop.LoggerBefore"></bean>
+    <bean id="after" class="com.shyu.classics.aop.LoggerAfter"></bean>
+    <!-- aop的配置 -->
+    <aop:config>
+        <aop:pointcut expression="execution(public void save2(com.shyu.classics.entity.User))" id="pointcut"/>
+        <!-- 在切入点处插入增强处理、完成"织入" -->
+        <aop:advisor advice-ref="before" pointcut-ref="pointcut"/>
+        <aop:advisor advice-ref="after" pointcut-ref="pointcut"/>
+    </aop:config>
+</beans>

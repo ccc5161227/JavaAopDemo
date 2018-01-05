@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 1目标类 -->
+    <bean id="adviceimpl" class="com.shyu.ProxyFactoryBean.impl.AdviceImpl"></bean>
+
+    <!-- 2切面类，含有通知 -->
+    <bean id="aroundAspect" class="com.shyu.ProxyFactoryBean.advice.MyInterceptor"></bean>
+
+    <bean id="afterAspect" class="com.shyu.ProxyFactoryBean.advice.AfterReturningAdvie"></bean>
+
+    <bean id="beforeAspect" class="com.shyu.ProxyFactoryBean.advice.MethodBeforeAdvice"></bean>
+
+    <bean id="exceptionAspect" class="com.shyu.ProxyFactoryBean.advice.MyException"></bean>
+
+
+    <!-- 3代理类
+        * ProxyFactoryBean 用于生产代理类一个特殊的工厂bean
+            proxyInterfaces 用于确定需要实现接口
+            interceptorNames 用于确定通知实现类，需要提供的bean名称
+            target 用于确定代理类bean名称
+    -->
+    <bean id="personServiceProxyId" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <!-- 3.1 确定接口 -->
+        <property name="proxyInterfaces" value="com.shyu.ProxyFactoryBean.factory.Advice"></property>
+        <!-- 3.2 确定通知（interceptorNames切换2中不通id来确定advice的类型） -->
+        <property name="interceptorNames" value="afterAspect"></property>
+        <!-- 3.3 确定目标类-->
+        <property name="target" ref="adviceimpl"></property>
+        <!-- 3.4 设置true，强制使用 cglib -->
+        <property name="optimize" value="true"></property>
+    </bean>
+</beans>
